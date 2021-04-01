@@ -17,7 +17,7 @@ jobs:
         cd example
         docker-compose -f docker-compose.integration-tests.yml build tests
         docker-compose -f docker-compose.integration-tests.yml run tests
-        ls screenshots/app.png
+        ls screenshots/*.png
     - uses: actions/upload-artifact@v1
       with:
         name: test-screenshot.png
