@@ -7,4 +7,4 @@ services:
     volumes:
       - "./integration-tests:/integration-tests"
       - "./screenshots:/screenshots"
-    command: "wait-for-it.sh -- mocha --recursive /integration-tests"
+    command: "npm ./integration-tests/index.test.js"
