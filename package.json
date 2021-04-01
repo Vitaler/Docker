@@ -1,19 +1,5 @@
 {
-  "name": "@vitaler/docker",
-  "version": "1.0.0",
-  "description": "practice",
-  "main": "index.js",
-  "scripts": {
-    "test": "exit 0"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/Vitaler/Docker.git"
-  },
-  "author": "vitaler",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/Vitaler/Docker/issues"
-  },
-  "homepage": "https://github.com/Vitaler/Docker#readme"
+  "dependencies": {
+    "puppeteer": "8.0.0"
+  }
 }

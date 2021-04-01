@@ -1,46 +1,24 @@
-name: CI to Docker Hub
+name: Puppeteer Build & Test
 
-on:
-  push:
-    branches: [ main ]
+on: [push]
 
 jobs:
-  build:
-    runs-on: ubuntu-latest
-    steps:
 
-      - 
-        name: Checkout
-        uses: actions/checkout@v2
-      -       
-        name: Set up Docker Buildx
-        id: buildx
-        uses: docker/setup-buildx-action@v1
-      -     
-        name: Cache Docker layers
-        uses: actions/cache@v2
-        with:
-          path: /tmp/.buildx-cache
-          key: ${{ runner.os }}-buildx-${{ github.sha }}
-          restore-keys: |
-            ${{ runner.os }}-buildx-
-      - 
-        uses: docker/login-action@v1 
-        with:
-          username: ${{ secrets.DOCKER_HUB_USERNAME }}
-          password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
-      -
-        name: Build and push
-        id: docker_build
-        uses: docker/build-push-action@v2
-        with:
-          context: ./ 
-          file: ./Dockerfile
-          builder: ${{ steps.buildx.outputs.name }}
-          push: true
-          tags: ${{ secrets.DOCKER_HUB_USERNAME }}/test:latest
-          cache-from: type=local,src=/tmp/.buildx-cache
-          cache-to: type=local,dest=/tmp/.buildx-cache
-      -
-        name: Image digest
-        run: echo ${{ steps.docker_build.outputs.digest }}
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Build
+      run: docker build . --tag buildkite/puppeteer:latest
+    - name: Test
+      run: |
+        cd example
+        docker-compose -f docker-compose.integration-tests.yml build tests
+        docker-compose -f docker-compose.integration-tests.yml run tests
+        ls screenshots/app.png
+    - uses: actions/upload-artifact@v1
+      with:
+        name: test-screenshot.png
+        path: example/screenshots/*.png
