@@ -3,22 +3,22 @@ name: Puppeteer Build & Test
 on: [push]
 
 jobs:
-  screenshot:
-    name: Screenshot
-    strategy:
-      matrix:
-        os: [ubuntu-latest, macos-latest, windows-latest]
-    runs-on: ${{ matrix.os }}
+
+  build:
+
+    runs-on: ubuntu-latest
 
     steps:
-
-    - name: Screenshot Website
-      uses: swinton/screenshot-website@v1.x
+    - uses: actions/checkout@v2
+    - name: Build
+      run: docker build . --tag buildkite/puppeteer:latest
+    - name: Test
+      run: |
+        cd example
+        docker-compose -f docker-compose.integration-tests.yml build tests
+        docker-compose -f docker-compose.integration-tests.yml run tests
+        ls screenshots/app.png
+    - uses: actions/upload-artifact@v1
       with:
-        source: https://translate.google.com
-        destination: screenshot-${{ matrix.os }}.png
-    - name: 'Accidently upload to the same artifact via multiple jobs'
-      uses: 'actions/upload-artifact@v2'
-      with:
-          name: my-artifact-${{ matrix.os }}
-          path: screenshot-${{ matrix.os }}.png
+        name: test-screenshot.png
+        path: example/screenshots/app.png
