@@ -65,7 +65,7 @@ const puppeteer = require('puppeteer');
   });
   let page = await browser.newPage();
   await page.goto('https://tools.shuax.com/chrome');
-  // await page.screenshot({ path: `/screenshots/${new Date().getTime()}.png` });
+  await page.screenshot({ path: `/screenshots/${new Date().getTime()}.png` });
   await (await page.$('.ivu-tabs-nav > div:nth-child(3)')).click();
 
   await page.screenshot({ path: `/screenshots/app.png` });
