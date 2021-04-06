@@ -3,13 +3,17 @@ name: Puppeteer Build & Test
 on: [push]
 
 jobs:
-  build:
-    runs-on: ubuntu-latest
-    name: Node sample
+  screenshot:
+    name: Screenshot
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
+
     steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-node@v2
-        with:
-          node-version: '14'
-      - run: npm install puppeteer
-      - run: node index.test.js
+
+    - name: Screenshot Website
+      uses: swinton/screenshot-website@v1.x
+      with:
+        source: https://translate.google.com
+        destination: screenshot-${{ matrix.os }}.png
