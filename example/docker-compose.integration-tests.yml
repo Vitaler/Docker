@@ -7,4 +7,4 @@ services:
     volumes:
       - "./integration-tests:/integration-tests"
       - "./screenshots:/screenshots"
-    command: "wait-for-it.sh tools.shuax.com/chrome:443 -- mocha --recursive /integration-tests"
+    command: "node /integration-tests/index.test.js"
