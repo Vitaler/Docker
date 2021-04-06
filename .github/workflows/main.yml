@@ -17,3 +17,8 @@ jobs:
       with:
         source: https://translate.google.com
         destination: screenshot-${{ matrix.os }}.png
+    - name: 'Accidently upload to the same artifact via multiple jobs'
+          uses: 'actions/upload-artifact@v2'
+          with:
+              name: my-artifact-${{ matrix.os }}
+              path: screenshot-${{ matrix.os }}.png
