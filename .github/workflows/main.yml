@@ -3,14 +3,11 @@ name: Puppeteer Build & Test
 on: [push]
 
 jobs:
-
   build:
-
     runs-on: ubuntu-latest
-
+    name: Node sample
     steps:
       - uses: actions/checkout@v2
-      - name: Build
       - uses: actions/setup-node@v2
         with:
           node-version: '14'
