@@ -72,6 +72,6 @@ const puppeteer = require('puppeteer');
 
   let content = await page.$("body > div > div > div:nth-child(4) > div:nth-child(3)");
   let version = await content.$eval('p:nth-child(1) > b', node => node.textContent);
-  console.log(vewsion);
+  console.log(version);
   browser.close();
 })();
