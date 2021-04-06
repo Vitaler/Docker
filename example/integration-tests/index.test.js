@@ -18,19 +18,19 @@ before(async () => {
 
   const browserVersion = await browser.version();
   console.log(`Started ${browserVersion}`);
-})
+});
 
 beforeEach(async () => {
   page = await browser.newPage();
-})
+});
 
 afterEach(async () => {
   await page.close();
-})
+});
 
 after(async () => {
   await browser.close();
-})
+});
 
 describe('App', () => {
   it('renders', async () => {
@@ -45,7 +45,7 @@ describe('App', () => {
     let version = await content.$eval('p:nth-child(1) > b', node => node.textContent);
     console.log(`version is ${version}`);
   })
-})
+});
 
 
 
