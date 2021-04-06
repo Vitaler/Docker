@@ -20,5 +20,5 @@ jobs:
         ls screenshots/
     - uses: actions/upload-artifact@v2
       with:
-        name: test-screenshot.png
+        name: result-screenshot
         path: example/screenshots/*.png
