@@ -54,6 +54,7 @@ const puppeteer = require('puppeteer');
 
 (async () => {
   let browser = await puppeteer.launch({
+    headless: false,
     args: [
       // Required for Docker version of Puppeteer
       '--no-sandbox',
@@ -65,13 +66,13 @@ const puppeteer = require('puppeteer');
   });
   let page = await browser.newPage();
   await page.goto('https://tools.shuax.com/chrome');
-  await page.screenshot({ path: `/screenshots/${new Date().getTime()}.png` });
+  // await page.screenshot({ path: `/screenshots/${new Date().getTime()}.png` });
   await (await page.$('.ivu-tabs-nav > div:nth-child(3)')).click();
 
-  await page.screenshot({ path: `/screenshots/app.png` });
+  // await page.screenshot({ path: `/screenshots/app.png` });
 
   let content = await page.$("body > div > div > div:nth-child(4) > div:nth-child(3)");
-  let version = await content.$eval('p:nth-child(1) > b', node => node.textContent);
+  let version = await content.$eval('p > b', node => node.textContent);
   console.log(version);
   browser.close();
 })();
