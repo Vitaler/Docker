@@ -1,3 +1,2 @@
-﻿FROM buildkite/puppeteer:latest
-RUN  npm i mocha
+﻿FROM vitaler/puppeteer:latest
 ENV  PATH="${PATH}:/node_modules/.bin"
