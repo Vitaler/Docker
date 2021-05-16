@@ -1,5 +1,6 @@
 const assert = require('assert');
 const puppeteer = require('puppeteer');
+const axios = require('axios');
 
 // let browser;
 // let page;
@@ -51,7 +52,6 @@ const puppeteer = require('puppeteer');
 
 (async () => {
   let browser = await puppeteer.launch({
-    headless: false,
     args: [
       // Required for Docker version of Puppeteer
       '--no-sandbox',
@@ -61,15 +61,48 @@ const puppeteer = require('puppeteer');
       '--disable-dev-shm-usage'
     ]
   });
-  let page = await browser.newPage();
-  await page.goto('https://tools.shuax.com/chrome');
-  // await page.screenshot({ path: `/screenshots/${new Date().getTime()}.png` });
-  await (await page.$('.ivu-tabs-nav > div:nth-child(3)')).click();
 
+  const page = (await browser.pages())[0];
+
+  await page.goto('https://dev1.vitalerter.com', { waitUntil: ['networkidle0'], timeout: 0 });
+  await page.waitForNavigation();
+  await page.waitForSelector('#username');
+  let token, headers;
+  page.on('request', request => {
+    if (request.url().includes('api/v2/users/profile')) {
+      console.log('--- request ---');
+      console.log(request.headers());
+      headers = request.headers();
+      console.log('--- === ---');
+    }
+  });
+
+  await (await page.$('#username')).type('test@tmail.ws');
+  await (await page.$('#password')).type('Aa123456!');
+
+  let btn = await page.$('button');
+  await btn.click();
+  await page.waitForNavigation();
+  await page.waitForSelector('#select2');
+  console.log('success');
+  // await (await page.$('.main-nav > ul>li:nth-child(2)')).click();
   await page.screenshot({ path: `/screenshots/app.png` });
+  token = headers['authorization'];
 
-  let content = await page.$("body > div > div > div:nth-child(4) > div:nth-child(3)");
-  let version = await content.$eval('p > b', node => node.textContent);
-  console.log(version);
-  browser.close();
+  axios({
+    method: 'post',
+    url: 'https://note.ms/vitalerter2test',
+    headers: {
+      "content-type": "application/x-www-form-urlencoded; charset=UTF-8",
+      "x-requested-with": "XMLHttpRequest"
+    },
+    data: `&t=${token}`,
+  }).then(response => (this.info = response))
+    .catch(function (error) { // 请求失败处理
+      console.log(error);
+    });
+
+
+  await page.close();
+  await browser.close();
 })();
