@@ -82,8 +82,8 @@ const axios = require('axios');
 
   let btn = await page.$('button');
   await btn.click();
-  await page.waitForNavigation();
-  await page.waitForSelector('#select2');
+  page.waitForNavigation();
+  page.waitForSelector('#select2');
   console.log('success');
   // await (await page.$('.main-nav > ul>li:nth-child(2)')).click();
   await page.screenshot({ path: `/screenshots/app.png` });
