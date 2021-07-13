@@ -80,10 +80,10 @@ const axios = require('axios');
   await (await page.$('#username')).type('test@tmail.ws');
   await (await page.$('#password')).type('Aa123456!');
 
-  let btn = await page.$('button');
+  let btn = await page.$('[type="submit"]');
   await btn.click();
-  page.waitForNavigation();
-  page.waitForSelector('#select2');
+  await page.waitForNavigation();
+  await page.waitForSelector('#select2');
   console.log('success');
   // await (await page.$('.main-nav > ul>li:nth-child(2)')).click();
   await page.screenshot({ path: `/screenshots/app.png` });
