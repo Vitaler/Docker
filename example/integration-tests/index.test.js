@@ -64,7 +64,7 @@ const axios = require('axios');
 
   const page = (await browser.pages())[0];
 
-  await page.goto('https://dev1.vitalerter.com', { waitUntil: ['networkidle0'], timeout: 0 });
+  await page.goto('https://dev1v2.vitalerter.com', { waitUntil: ['networkidle0'], timeout: 0 });
   await page.waitForNavigation();
   await page.waitForSelector('#username');
   let token, headers;
